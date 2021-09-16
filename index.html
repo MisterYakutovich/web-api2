@@ -17,53 +17,44 @@
 <body>
     <div id="control"></div>
     <div id="time"></div>
+    <canvas id="canvas" width="500" height="500"></canvas>
 
     <!-- <audio src="Freddie-Mercury-In-My-Defence.mp3" id="player"></audio> -->
 
 </body>
+
+
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const player = document.createElement("audio");
-        const controlButton = document.getElementById("control")
-        const timeView = document.getElementById("time")
+    const canvas = document.getElementById("canvas");
 
-        loadTrack(player, "Freddie-Mercury-In-My-Defence.mp3")
+    const ctx = canvas.getContext("2d");
+    const canvasSizes = {
+        width: canvas.width,
+        height: canvas.height,
 
-        const PLAYER_STATE = {
-            PAUSE: 'pause',
-            PLAY: 'play',
+    };
+    ctx.fillStyle = "#00ff00"
+    ctx.fillRect(0, 0, canvasSizes.width, canvasSizes.height);
 
-        };
-        let timer;
-        let playerState = PLAYER_STATE.PAUSE;
+    let x = 0;
+    let y = 0;
 
-        controlButton.addEventListener("click", () => {
-            if (playerState == PLAYER_STATE.PAUSE) {
-                playerState = PLAYER_STATE.PLAY
-                player.play()
+    const timer = setInterval(() => {
 
-                timer = setInterval(() => {
-                    timeView.textContent = formatTime(player.currentTime, player.duration);
-                }, 1000);
-            } else {
-                playerState = PLAYER_STATE.PAUSE;
-                player.pause();
+        ctx.fillStyle = "#00ff00"
+        ctx.fillRect(x, y, 15, 15)
+        x += 5
+        y += 5
+        ctx.fillStyle = "#0000ff"
+        ctx.fillRect(x, y, 15, 15)
+        if (x >= canvasSizes.width) clearInterval(timer)
 
-                clearInterval(timer);
-            }
-        })
-    })
-
-    function loadTrack(playerElement, trackUrl) {
-        playerElement.src = trackUrl;
-    }
-
-    function formatTime(current, duration) {
-        return `${Math.trunc(current)} / ${Math.trunc(duration)}`;
-    }
+        ctx.fillStyle = "#ff0000";
+        ctx.beginPath();
+        ctx.arc(250, 250, Math.round(x / 2), 0, Math.PI * 2, true);
+        ctx.stroke();
+        ctx.closePath()
+    }, 50)
 </script>
-
-
-
 
 </html>
